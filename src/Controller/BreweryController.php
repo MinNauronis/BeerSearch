@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\GeoCode;
 use App\Form\BeersFinderType;
-use App\Services\DataFormater;
+use App\Services\DataFormatter\BeerFormatter;
+use App\Services\DataFormatter\TravelFormatter;
 use App\Services\DataProvider;
-use App\Services\GeoCalculator;
+use App\Services\Calculator\GeoCalculator;
 use App\Services\Navigation;
-use App\Services\SimplePathFinder;
+use App\Services\PathFinder\SimplePathFinder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,24 +50,22 @@ class BreweryController extends AbstractController
             $home = $this->getHome($startLocation['latitude'], $startLocation['longitude']);
             $fuelDistance = 2000;
 
-            $provider = new DataProvider($this->getDoctrine()->getManager());
-            $formatter = new DataFormater($provider, new GeoCalculator());
 
-            $navi = $this->getNavigation($home, $fuelDistance, $provider);
+            $navi = $this->getNavigation($home, $fuelDistance);
             $path = $navi->findPath();
-            $report1 = $formatter->getTravelReport($path);
-            $report2 = $formatter->getBeersReport($path);
+            $travelReport = $this->getTravelReport($path);
+            $beerReport = $this->getBeerReport($path);
 
             dump($navi);
             dump($path);
-            dump($report1);
-            dump($report2);
+            dump($travelReport);
+            dump($beerReport);
 
             return $this->render('brewery/finder.html.twig', [
                 'controller_name' => 'BreweryController',
                 'form' => $form->createView(),
-                'travelRoute' => $report1,
-                'beersCollection' => $report2
+                'travelRoute' => $travelReport,
+                'beersCollection' => $beerReport
             ]);
 
         }
@@ -77,8 +76,9 @@ class BreweryController extends AbstractController
         ]);
     }
 
-    private function getNavigation(GeoCode $home, $fuelDistance, DataProvider $provider)
+    private function getNavigation(GeoCode $home, $fuelDistance)
     {
+        $provider = new DataProvider($this->getDoctrine()->getManager());
         $calculator = new GeoCalculator();
         $finder = new SimplePathFinder($calculator);
         $distanceKm = $fuelDistance / 2;
@@ -91,5 +91,20 @@ class BreweryController extends AbstractController
         $home->setLatitude(floatval($latitude));
         $home->setLongitude(floatval($longitude));
         return $home;
+    }
+
+    private function getTravelReport($path) {
+        $calculator = new GeoCalculator();
+        $formatter = new TravelFormatter($calculator);
+
+        return $formatter->getReport($path);
+    }
+
+    private function getBeerReport($path) {
+        $provider = new DataProvider($this->getDoctrine()->getManager());
+        $calculator = new GeoCalculator();
+        $formatter = new BeerFormatter($provider, $calculator);
+
+        return $formatter->getReport($path);
     }
 }

@@ -19,7 +19,7 @@ class BeersFinderType extends AbstractType
                 'invalid_message' => 'Must be a number',
                 'scale' => 8,
                 //DELETE DELETE
-                'required' =>false,
+                'required' => false,
                 'empty_data' => 51.742503,
             ))
             ->add('longitude', NumberType::class, array(
@@ -28,7 +28,7 @@ class BeersFinderType extends AbstractType
                 'invalid_message' => 'Must be a number',
                 'scale' => 8,
                 //DELETE DELETE
-                'required' =>false,
+                'required' => false,
                 'empty_data' => 19.432956,
 
             ))

@@ -11,104 +11,67 @@ use Doctrine\ORM\EntityManagerInterface;
 class DataProvider
 {
     private $entityManager;
-    private $beers;
-    private $breweries;
-    private $locations;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-
-        $this->beers = $this->entityManager->getRepository(Beer::class)->findAll();
-        $this->breweries = $this->entityManager->getRepository(Brewery::class)->findAll();
-        $this->locations = $this->entityManager->getRepository(GeoCode::class)->findAll();
     }
 
     /**
+     * Return all beer from database
      * @return object[]
      */
     public function getBeers(): array
     {
-        return $this->beers;
+        return $this->entityManager->getRepository(Beer::class)->findAll();
     }
 
     /**
+     * Return all breweries from database
      * @return object[]
      */
     public function getBreweries(): array
     {
-        return $this->breweries;
+        return $this->entityManager->getRepository(Brewery::class)->findAll();
     }
 
     /**
+     * Return all GeoCodes from database
      * @return object[]
      */
     public function getLocations(): array
     {
-        return $this->locations;
+        return $this->entityManager->getRepository(GeoCode::class)->findAll();
     }
 
     /**
+     * Return brewery from database by id
      * @param $id
-     * @return null\Brewery
+     * @return null|Brewery
      */
     public function getBrewery($id)
     {
-        foreach ($this->breweries as $brewery) {
-            if ($brewery->getId() == $id) {
-                return $brewery;
-            }
-        }
-
-        return null;
+        return $this->entityManager->getRepository(Brewery::class)->find($id);
     }
 
     /**
+     * Return GeoCode from database by id
      * @param $id
-     * @return null\GeoCode
+     * @return null|GeoCode
      */
     public function getLocation($id)
     {
-        foreach ($this->locations as $location) {
-            if ($location->getId() == $id) {
-                return $location;
-            }
-        }
-
-        return null;
+        return $this->entityManager->getRepository(GeoCode::class)->find($id);
     }
 
     /**
+     * Return beer from database by id
      * @param $id
      * @return null\Beer
      */
     public function getBeer($id)
     {
-        foreach ($this->beers as $beer) {
-            if ($beer->getId() == $id) {
-                return $beer;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Return all beers from one brewery
-     *
-     * @param Brewery $brewery
-     * @return array
-     */
-    public function getBreweryBeers(Brewery $brewery)
-    {
-        $beers = array();
-        foreach ($this->beers as $beer) {
-            if ($beer->getBrewery() == $brewery) {
-                $beers[] = $beer;
-            }
-        }
-
-        return $beers;
+        return $this->entityManager->getRepository(Beer::class)->find($id);
     }
 
     /**
@@ -135,6 +98,17 @@ class DataProvider
         }
 
         return $collection;
+    }
+
+    /**
+     * Return all beers from one brewery
+     *
+     * @param Brewery $brewery
+     * @return array
+     */
+    public function getBreweryBeers(Brewery $brewery)
+    {
+        return $brewery->getBeers();
     }
 
 }

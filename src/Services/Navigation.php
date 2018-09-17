@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Entity\Beer;
 use App\Entity\GeoCode;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Services\Calculator\GeoCalculatorInterface;
+use App\Services\PathFinder\PathFinderInterface;
 
 class Navigation
 {
@@ -53,7 +53,7 @@ class Navigation
         $this->findBreweriesCoordinates();
     }
 
-    public function setNewSearchRange(?double $rangeKm)
+    public function setNewSearchRange($rangeKm)
     {
         $this->searchRange = $rangeKm;
         $this->findBreweriesCoordinates();
@@ -64,7 +64,7 @@ class Navigation
         return $this->home;
     }
 
-    public function getRange(): ?double
+    public function getRange()
     {
         return $this->searchRange;
     }

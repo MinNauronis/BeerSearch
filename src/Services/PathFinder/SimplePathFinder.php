@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\PathFinder;
 
 use App\Entity\GeoCode;
+use App\Services\Calculator\GeoCalculatorInterface;
 
 class SimplePathFinder implements PathFinderInterface
 {
@@ -56,11 +57,11 @@ class SimplePathFinder implements PathFinderInterface
     /**
      * Return nearest location, which is not selected yet
      *
-     * @param $currentLocation Last visited location
+     * @param G$currentLocation Last visited location
      * @param $selectedLocations All visited locations
      * @param $breweriesLocations All locations of breweries
      * @param $distance in kilometres
-     * @return null\GeoCode
+     * @return null|GeoCode
      */
     private function findNearestLocation($currentLocation, $selectedLocations, $breweriesLocations, $distance)
     {

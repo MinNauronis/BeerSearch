@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Calculator;
 
 use App\Entity\GeoCode;
 //https://www.wearedevelopers.com/define-or-const/

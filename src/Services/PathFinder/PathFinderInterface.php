@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Services;
-
-use App\Entity\GeoCode;
+namespace App\Services\PathFinder;
 
 interface PathFinderInterface
 {
