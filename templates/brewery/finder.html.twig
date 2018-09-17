@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	{{ form_end(form) }}
+
+	{% if travelRoute is defined and travelRoute is not null %}
+		<table class="table">
+			<thead class="thead-light">
+				<th colspan="4">{{ travelRoute.header }}</th>
+			</thead>
+			<tbody>
+			{% for line in travelRoute.body %}
+				<tr>
+					<td>{{ line.direction }}</td>
+					<td>{{ line.title }}</td>
+					<td>{{ line.coordinates }}</td>
+					<td>{{ line.distance }}</td>
+				</tr>
+			{% endfor %}
+			<tr>
+				<td colspan="4">{{ travelRoute.totalDistance }}</td>
+			</tr>
+			</tbody>
+		</table>
+	{% endif %}
+
+	{% if travelRoute is defined and travelRoute is not null %}
+		<table class="table">
+			<thead class="thead-light">
+			<th>{{ beersCollection.header }}</th>
+			</thead>
+			<tbody>
+			{% for line in beersCollection.body %}
+				<tr>
+					<td>{{ line }}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+{% endblock %}

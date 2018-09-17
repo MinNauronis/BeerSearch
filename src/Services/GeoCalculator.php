@@ -1,0 +1,101 @@
+<?php
+
+namespace App\Services;
+
+use App\Entity\GeoCode;
+//https://www.wearedevelopers.com/define-or-const/
+//"Const can not be defined anywhere except the outer-most context."
+const R = 6371e3; // metres
+//https://www.movable-type.co.uk/scripts/latlong.html
+class GeoCalculator implements GeoCalculatorInterface
+{
+    /**
+     * Edge of ellipse (circle) at NESW directions
+     * range given in kilometres
+     *
+     * @param GeoCode $home
+     * @param $range
+     * @return array of Coordinate
+     */
+    public function getBoundariesPoints(GeoCode $home, $range): array
+    {
+        $directions = [];
+        $dirNames = ['north', 'east', 'south', 'west'];
+
+        for ($i = 0; $i < 4; $i++) {
+            $bearing = 90 * $i;
+            $direction = $this->newPoint($home, $range, $bearing);
+            $directions += array($dirNames[$i] => $direction);
+        }
+
+        return $directions;
+    }
+
+    /**
+     * Return new point by given distance and bearing.
+     * Distance in kilometres.
+     * Bearing in degree
+     *
+     * @param Coordinate $currentPoint
+     * @param $distance
+     * @param $bearing
+     * @return Coordinate
+     */
+    private function newPoint(Coordinate $currentPoint, $distance, $bearing)
+    {
+        $φ1 = $currentPoint->getLatitude() * M_PI / 180;
+        $λ1 = $currentPoint->getLongitude() * M_PI / 180;
+        $bearingRadians = $bearing * M_PI / 180;
+        $distance *= 1000;
+
+        //φ2 = asin( sin φ1 ⋅ cos δ + cos φ1 ⋅ sin δ ⋅ cos θ ) LAT
+        //λ2 = λ1 + atan2( sin θ ⋅ sin δ ⋅ cos φ1, cos δ − sin φ1 ⋅ sin φ2 ) LONG
+        //δ is the angular distance d/R
+        //θ is the bearing (clockwise from north)
+
+        $φ2 = asin(sin($φ1) * cos($distance / R)
+            + cos($φ1) * sin($distance / R) * cos($bearingRadians));
+
+        $λ2 = $λ1 + atan2(
+                sin($bearingRadians) * sin($distance / R) * cos($φ1),
+                cos($distance / R) - sin($φ1) * sin($φ2));
+
+        $latitude2 = round(rad2deg($φ2), 8);
+        $longitude2 = round(rad2deg($λ2), 8);
+
+        return new Coordinate($latitude2, $longitude2);
+
+    }
+
+    /**
+     * Return distance between given points
+     * Haversine formula used
+     *
+     * @param GeoCode $point1
+     * @param GeoCode $point2
+     * @return float
+     */
+    public function getDistance(GeoCode $point1, GeoCode $point2): float
+    {
+
+        //latitudes as radians
+        $φ1 = $point1->getLatitude() * M_PI / 180;
+        $φ2 = $point2->getLatitude() * M_PI / 180;
+
+        $δφ = (($point2->getLatitude() - $point1->getLatitude()) * M_PI / 180);
+        $δλ = (($point2->getLongitude() - $point1->getLongitude()) * M_PI / 180);
+
+        /*Haversine formula:
+        	a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
+            c = 2 ⋅ atan2( √a, √(1−a) )
+            d = R ⋅ c
+        */
+
+        $a = pow(sin($δφ / 2), 2) + cos($φ1) * cos($φ2) * pow(sin($δλ / 2), 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        $metres = R * $c;
+        $km = $metres / 1000;
+
+        return round($km, 3);
+    }
+}
