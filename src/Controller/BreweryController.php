@@ -9,6 +9,7 @@ use App\Services\DataFormatter\TravelFormatter;
 use App\Services\DataProvider;
 use App\Services\Calculator\GeoCalculator;
 use App\Services\Navigation;
+use App\Services\PathFinder\AdvancedPathFinder;
 use App\Services\PathFinder\SimplePathFinder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,7 +81,8 @@ class BreweryController extends AbstractController
     {
         $provider = new DataProvider($this->getDoctrine()->getManager());
         $calculator = new GeoCalculator();
-        $finder = new SimplePathFinder($calculator);
+        $finder = new AdvancedPathFinder($calculator);
+        //$finder = new SimplePathFinder($calculator);
         $distanceKm = $fuelDistance / 2;
         $navi = new Navigation($home, $distanceKm, $calculator, $finder, $provider);
         return $navi;
