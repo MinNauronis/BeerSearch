@@ -19,18 +19,12 @@ class BeersFinderType extends AbstractType
                 'help' => 'Write longitude in decimal degree',
                 'invalid_message' => 'Must be a number',
                 'scale' => 8,
-                //DELETE DELETE
-                'required' => false,
-                'empty_data' => 51.742503,
             ))
             ->add('longitude', NumberType::class, array(
                 'label' => 'Set longitude',
                 'help' => 'Write longitude in decimal degree',
                 'invalid_message' => 'Must be a number',
                 'scale' => 8,
-                //DELETE DELETE
-                'required' => false,
-                'empty_data' => 19.432956,
 
             ))
             ->add('submit', SubmitType::class, array(
