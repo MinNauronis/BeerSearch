@@ -9,10 +9,11 @@
 
 	{% if travelRoute is defined and travelRoute is not null %}
 		<table class="table">
-			<thead class="thead-light">
+			<thead id="travelHead" class="thead-light">
 			<th colspan="4">{{ travelRoute.header }}</th>
 			</thead>
-			<tbody>
+
+			<tbody id="travelBody">
 			{% for line in travelRoute.body %}
 				<tr>
 					<td>{{ line.direction }}</td>
@@ -21,19 +22,23 @@
 					<td>{{ line.distance }}</td>
 				</tr>
 			{% endfor %}
+			</tbody>
+
+			<tfoot>
 			<tr>
 				<td colspan="4">{{ travelRoute.totalDistance }}</td>
 			</tr>
-			</tbody>
+			</tfoot>
 		</table>
 	{% endif %}
 
-	{% if travelRoute is defined and travelRoute is not null %}
+	{% if beersCollection is defined and beersCollection is not null %}
 		<table class="table">
-			<thead class="thead-light">
+			<thead id="beersHead" class="thead-light">
 			<th>{{ beersCollection.header }}</th>
 			</thead>
-			<tbody>
+
+			<tbody id="beersBody">
 			{% for line in beersCollection.body %}
 				<tr>
 					<td>{{ line }}</td>
@@ -52,4 +57,5 @@
 
 {% block javascripts %}
 	<script src="{{ asset('/js/toTopButton.js') }}"></script>
+	<script src="{{ asset('/js/tableBodyVisibility.js') }}"></script>
 {% endblock %}
