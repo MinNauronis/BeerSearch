@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 use App\Entity\Beer;
 use App\Entity\Brewery;
 use App\Entity\GeoCode;
@@ -67,7 +66,7 @@ class DataProvider
     /**
      * Return beer from database by id
      * @param $id
-     * @return null\Beer
+     * @return null|Beer
      */
     public function getBeer($id)
     {

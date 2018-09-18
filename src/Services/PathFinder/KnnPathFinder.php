@@ -18,5 +18,6 @@ class KnnPathFinder implements PathFinderInterface
     public function findPath($home, $locations, $beers, $searchDistance): array
     {
         // TODO: Implement findPath() method.
+        return array();
     }
 }

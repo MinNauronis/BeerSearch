@@ -3,6 +3,7 @@
 namespace App\Services\Calculator;
 
 use App\Entity\GeoCode;
+
 //https://www.wearedevelopers.com/define-or-const/
 //"Const can not be defined anywhere except the outer-most context."
 const R = 6371e3; // metres
@@ -36,12 +37,12 @@ class GeoCalculator implements GeoCalculatorInterface
      * Distance in kilometres.
      * Bearing in degree
      *
-     * @param Coordinate $currentPoint
+     * @param GeoCode $currentPoint
      * @param $distance
      * @param $bearing
-     * @return Coordinate
+     * @return GeoCode
      */
-    private function newPoint(Coordinate $currentPoint, $distance, $bearing)
+    private function newPoint(GeoCode $currentPoint, $distance, $bearing)
     {
         $φ1 = $currentPoint->getLatitude() * M_PI / 180;
         $λ1 = $currentPoint->getLongitude() * M_PI / 180;
@@ -63,7 +64,10 @@ class GeoCalculator implements GeoCalculatorInterface
         $latitude2 = round(rad2deg($φ2), 8);
         $longitude2 = round(rad2deg($λ2), 8);
 
-        return new Coordinate($latitude2, $longitude2);
+        $result = new GeoCode();
+        $result->setLatitude($latitude2);
+        $result->setLongitude($longitude2);
+        return $result;
 
     }
 

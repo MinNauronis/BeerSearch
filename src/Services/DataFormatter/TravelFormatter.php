@@ -36,7 +36,7 @@ class TravelFormatter
 
     private function formatTravelTitle($locationsCount)
     {
-        return 'Found ' . $locationsCount . '   breweries:';
+        return 'Found ' . $locationsCount . ' breweries:';
     }
 
     private function formatTravelBody(?array $path)

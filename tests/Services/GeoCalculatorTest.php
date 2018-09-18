@@ -2,17 +2,22 @@
 
 namespace App\Tests;
 
-use App\Services\Coordinate;
-use App\Services\GeoCalculator;
+
+use App\Entity\GeoCode;
+use App\Services\Calculator\GeoCalculator;
 use PHPUnit\Framework\TestCase;
 
-class CoordinatesOperatorTest extends TestCase
+class GeoCalculatorTest extends TestCase
 {
     public function testGetDistance()
     {
         $explorer = new GeoCalculator();
-        $point1 = new Coordinate(1.0, 1.0);
-        $point2 = new Coordinate(1.0, 11.0);
+        $point1 = new GeoCode();
+        $point1->setLatitude(1.0);
+        $point1->setLongitude(1.0);
+        $point2 = new GeoCode();
+        $point2->setLatitude(1.0);
+        $point2->setLongitude(11.0);
 
         $result = $explorer->getDistance($point1, $point2);
 
@@ -25,8 +30,12 @@ class CoordinatesOperatorTest extends TestCase
     public function testGetDistance2()
     {
         $explorer = new GeoCalculator();
-        $point1 = new Coordinate(2.566, 157);
-        $point2 = new Coordinate(54, -122.1449);
+        $point1 = new GeoCode();
+        $point1->setLatitude(2.566);
+        $point1->setLongitude(157);
+        $point2 = new GeoCode();
+        $point2->setLatitude(54);
+        $point2->setLongitude(-122.1449);
 
         $result = $explorer->getDistance($point1, $point2);
 
@@ -39,8 +48,12 @@ class CoordinatesOperatorTest extends TestCase
     public function testGetDistance3()
     {
         $explorer = new GeoCalculator();
-        $point1 = new Coordinate(-1224524, 1);
-        $point2 = new Coordinate(45, -114);
+        $point1 = new GeoCode();
+        $point1->setLatitude(-1224524);
+        $point1->setLongitude(1);
+        $point2 = new GeoCode();
+        $point2->setLatitude(45);
+        $point2->setLongitude(-114);
 
         $result = $explorer->getDistance($point1, $point2);
 
@@ -53,7 +66,7 @@ class CoordinatesOperatorTest extends TestCase
     /*public function testNewPoint()
     {
         $operator = new LocationExplorer();
-        $point = new Coordinate(0.0, 0.0);
+        $point = new GeoCode(0.0, 0.0);
         $distance = 1000.0;
         $bearing = 90;
 
@@ -74,7 +87,7 @@ class CoordinatesOperatorTest extends TestCase
     /*public function testNewPoint2()
     {
         $operator = new LocationExplorer();
-        $point = new Coordinate(1.0, 2.4);
+        $point = new GeoCode(1.0, 2.4);
         $distance = 1548.177;
         $bearing = -21;
 

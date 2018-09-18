@@ -28,19 +28,9 @@ class BreweryController extends AbstractController
     }
 
     /**
-     * @Route("/finder", name="beers_finder", methods="GET|POST")
+     * @Route("/", name="finder", methods="GET|POST")
      */
-    public function beerFinder()
-    {
-        return $this->render('brewery/finder.html.twig', [
-            'controller_name' => 'BreweryController',
-        ]);
-    }
-
-    /**
-     * @Route("/find", name="test", methods="GET|POST")
-     */
-    public function testBeerFinder(Request $request)
+    public function beerFinder(Request $request)
     {
         $form = $this->createForm(BeersFinderType::class);
         $form->handleRequest($request);
@@ -56,7 +46,7 @@ class BreweryController extends AbstractController
             $path = $navi->findPath();
             $travelReport = $this->getTravelReport($path);
             $beerReport = $this->getBeerReport($path);
-
+            dump($path);
             return $this->render('brewery/finder.html.twig', [
                 'controller_name' => 'BreweryController',
                 'form' => $form->createView(),

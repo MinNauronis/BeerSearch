@@ -36,11 +36,10 @@ class AdvancedPathFinder implements PathFinderInterface
         $path[] = $home;
         $continueSearch = true;
 
-        $count = 15;
         while ($continueSearch) {
             $id = $this->nextLocationId($assembly, $searchLimit, end($path), $home);
 
-            if ($id == null) {
+            if ($id === null) {
                 $continueSearch = false;
                 break;
             }
@@ -78,6 +77,11 @@ class AdvancedPathFinder implements PathFinderInterface
         return $assembly;
     }
 
+    /**
+     * @param Brewery $brewery
+     * @param $beers
+     * @return array
+     */
     private function collectBeers(Brewery $brewery, $beers)
     {
         $beerCollection = array();
@@ -103,7 +107,7 @@ class AdvancedPathFinder implements PathFinderInterface
     private function nextLocationId($assembly, $leftDistance, GeoCode $lastLocation, GeoCode $home)
     {
         $id = null;
-        $bestScore = 0.1;
+        $bestScore = 1e-6;
         $consumedDistance = $leftDistance + 1;
 
         for ($i = 0; $i < count($assembly); $i++) {
@@ -114,7 +118,6 @@ class AdvancedPathFinder implements PathFinderInterface
 
             if ($requiredDistance <= $leftDistance) {
                 $score = $this->scoreCalculator($distanceToNewLoc, count($item[1]));
-
                 if ($score > $bestScore) {
                     $id = $i;
                     $bestScore = $score;
@@ -133,6 +136,7 @@ class AdvancedPathFinder implements PathFinderInterface
 
     private function scoreCalculator($distance, $beerCount)
     {
+
         if ($beerCount == 0) {
             return 0;
         }

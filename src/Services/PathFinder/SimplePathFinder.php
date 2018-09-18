@@ -57,10 +57,15 @@ class SimplePathFinder implements PathFinderInterface
     /**
      * Return nearest location, which is not selected yet
      *
-     * @param G$currentLocation Last visited location
-     * @param $selectedLocations All visited locations
-     * @param $breweriesLocations All locations of breweries
-     * @param $distance in kilometres
+     * $currentLocation - Last visited location
+     * $selectedLocations - All visited locations
+     * $breweriesLocations - All locations of breweries
+     * $distance in kilometres
+     *
+     * @param GeoCode $currentLocation
+     * @param $selectedLocations
+     * @param $breweriesLocations
+     * @param $distance
      * @return null|GeoCode
      */
     private function findNearestLocation($currentLocation, $selectedLocations, $breweriesLocations, $distance)

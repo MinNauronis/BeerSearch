@@ -13,5 +13,5 @@ interface PathFinderInterface
      * @param $searchDistance
      * @return array
      */
-    public function findPath($home, $locations, $beers, $searchDistance) : array;
+    public function findPath($home, $locations, $beers, $searchDistance): array;
 }

@@ -5,3 +5,10 @@
     right: 20px;
     display:none;
 }
+#travelHead, #beersHead{
+    cursor: pointer;
+}
+
+#travelBody, #beersBody {
+    display: none;
+}
