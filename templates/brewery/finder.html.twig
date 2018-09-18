@@ -10,7 +10,7 @@
 	{% if travelRoute is defined and travelRoute is not null %}
 		<table class="table">
 			<thead class="thead-light">
-				<th colspan="4">{{ travelRoute.header }}</th>
+			<th colspan="4">{{ travelRoute.header }}</th>
 			</thead>
 			<tbody>
 			{% for line in travelRoute.body %}
@@ -42,4 +42,14 @@
 			</tbody>
 		</table>
 	{% endif %}
+
+	<a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button"
+	   title="Click to return on the top page" data-toggle="tooltip" data-placement="left">
+		<span class="glyphicon glyphicon-chevron-up"></span>
+	</a>
+
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('/js/toTopButton.js') }}"></script>
 {% endblock %}

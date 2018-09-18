@@ -57,11 +57,6 @@ class BreweryController extends AbstractController
             $travelReport = $this->getTravelReport($path);
             $beerReport = $this->getBeerReport($path);
 
-            dump($navi);
-            dump($path);
-            dump($travelReport);
-            dump($beerReport);
-
             return $this->render('brewery/finder.html.twig', [
                 'controller_name' => 'BreweryController',
                 'form' => $form->createView(),
