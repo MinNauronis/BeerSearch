@@ -46,12 +46,11 @@ class BreweryController extends AbstractController
             $home = $this->getHome($startLocation['latitude'], $startLocation['longitude']);
             $fuelDistance = 2000;
 
-
             $navi = $this->getNavigation($home, $fuelDistance);
             $path = $navi->findPath();
             $travelReport = $this->getTravelReport($path);
             $beerReport = $this->getBeerReport($path);
-            //dump($path);
+
             return $this->render('brewery/finder.html.twig', [
                 'controller_name' => 'BreweryController',
                 'form' => $form->createView(),
@@ -67,6 +66,15 @@ class BreweryController extends AbstractController
         ]);
     }
 
+    private function getHome($latitude, $longitude)
+    {
+        $home = new GeoCode();
+        $home->setLatitude(floatval($latitude));
+        $home->setLongitude(floatval($longitude));
+
+        return $home;
+    }
+
     private function getNavigation(GeoCode $home, $fuelDistance)
     {
         $entityManager = $this->getDoctrine()->getManager();
@@ -78,22 +86,16 @@ class BreweryController extends AbstractController
         return $navi;
     }
 
-    private function getHome($latitude, $longitude) {
-        $home = new GeoCode();
-        $home->setLatitude(floatval($latitude));
-        $home->setLongitude(floatval($longitude));
-        
-        return $home;
-    }
-
-    private function getTravelReport($path) {
+    private function getTravelReport($path)
+    {
         $calculator = new GeoCalculator();
         $formatter = new TravelFormatter($calculator);
 
         return $formatter->getReport($path);
     }
 
-    private function getBeerReport($path) {
+    private function getBeerReport($path)
+    {
         $entityManager = $this->getDoctrine()->getManager();
         $calculator = new GeoCalculator();
         $formatter = new BeerFormatter($entityManager, $calculator);

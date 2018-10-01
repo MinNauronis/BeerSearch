@@ -44,8 +44,8 @@ class GeoCalculator implements GeoCalculatorInterface
      */
     private function newPoint(GeoCode $currentPoint, $distance, $bearing)
     {
-        $φ1 = $currentPoint->getLatitude() * M_PI / 180;
-        $λ1 = $currentPoint->getLongitude() * M_PI / 180;
+        $phi1 = $currentPoint->getLatitude() * M_PI / 180;
+        $lam1 = $currentPoint->getLongitude() * M_PI / 180;
         $bearingRadians = $bearing * M_PI / 180;
         $distance *= 1000;
 
@@ -54,15 +54,15 @@ class GeoCalculator implements GeoCalculatorInterface
         //δ is the angular distance d/R
         //θ is the bearing (clockwise from north)
 
-        $φ2 = asin(sin($φ1) * cos($distance / R)
-            + cos($φ1) * sin($distance / R) * cos($bearingRadians));
+        $phi2 = asin(sin($phi1) * cos($distance / R)
+            + cos($phi1) * sin($distance / R) * cos($bearingRadians));
 
-        $λ2 = $λ1 + atan2(
-                sin($bearingRadians) * sin($distance / R) * cos($φ1),
-                cos($distance / R) - sin($φ1) * sin($φ2));
+        $lam2 = $lam1 + atan2(
+                sin($bearingRadians) * sin($distance / R) * cos($phi1),
+                cos($distance / R) - sin($phi1) * sin($phi2));
 
-        $latitude2 = round(rad2deg($φ2), 8);
-        $longitude2 = round(rad2deg($λ2), 8);
+        $latitude2 = round(rad2deg($phi2), 8);
+        $longitude2 = round(rad2deg($lam2), 8);
 
         $result = new GeoCode();
         $result->setLatitude($latitude2);
@@ -81,13 +81,12 @@ class GeoCalculator implements GeoCalculatorInterface
      */
     public function getDistance(GeoCode $point1, GeoCode $point2): float
     {
-
         //latitudes as radians
-        $φ1 = $point1->getLatitude() * M_PI / 180;
-        $φ2 = $point2->getLatitude() * M_PI / 180;
+        $phi1 = $point1->getLatitude() * M_PI / 180;
+        $phi2 = $point2->getLatitude() * M_PI / 180;
 
-        $δφ = (($point2->getLatitude() - $point1->getLatitude()) * M_PI / 180);
-        $δλ = (($point2->getLongitude() - $point1->getLongitude()) * M_PI / 180);
+        $deltaPhi = (($point2->getLatitude() - $point1->getLatitude()) * M_PI / 180);
+        $deltaLam = (($point2->getLongitude() - $point1->getLongitude()) * M_PI / 180);
 
         /*Haversine formula:
         	a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
@@ -95,7 +94,7 @@ class GeoCalculator implements GeoCalculatorInterface
             d = R ⋅ c
         */
 
-        $a = pow(sin($δφ / 2), 2) + cos($φ1) * cos($φ2) * pow(sin($δλ / 2), 2);
+        $a = pow(sin($deltaPhi / 2), 2) + cos($phi1) * cos($phi2) * pow(sin($deltaLam / 2), 2);
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
         $metres = R * $c;
         $km = $metres / 1000;
