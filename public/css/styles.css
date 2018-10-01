@@ -12,3 +12,6 @@
 #travelBody, #beersBody {
     display: none;
 }
+body{
+    margin: 10px;
+}

@@ -72,7 +72,9 @@ class BreweryController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $calculator = new GeoCalculator();
         $distanceKm = $fuelDistance / 2;
+
         $navi = new Navigation($home, $distanceKm, $calculator, $this->pathFinder, $entityManager);
+
         return $navi;
     }
 
@@ -80,6 +82,7 @@ class BreweryController extends AbstractController
         $home = new GeoCode();
         $home->setLatitude(floatval($latitude));
         $home->setLongitude(floatval($longitude));
+        
         return $home;
     }
 

@@ -11,26 +11,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	{% block stylesheets %}
-		<link href="{{ asset('/css/styles.css') }}">
-		<style>
-			.back-to-top {
-				cursor: pointer;
-				position: fixed;
-				bottom: 20px;
-				right: 20px;
-				display:none;
-			}
-			#travelHead, #beersHead{
-				cursor: pointer;
-			}
-
-			#travelBody, #beersBody {
-				display: none;
-			}
-			body{
-				margin: 10px;
-			}
-		</style>
+		<link href="{{ asset('/css/styles.css')  }}" rel="stylesheet">
 	{% endblock %}
 </head>
 <body class="container">
