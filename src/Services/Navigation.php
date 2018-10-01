@@ -65,7 +65,7 @@ class Navigation
         return $this->home;
     }
 
-    public function getRange()
+    public function getRange(): ?float
     {
         return $this->searchRange;
     }

@@ -68,7 +68,7 @@ class SimplePathFinder implements PathFinderInterface
      * @param $distance
      * @return null|GeoCode
      */
-    private function findNearestLocation($currentLocation, $selectedLocations, $breweriesLocations, $distance)
+    private function findNearestLocation($currentLocation, $selectedLocations, $breweriesLocations, $distance): GeoCode
     {
         // pasirinkta vieta iš $breweriesLocations galėtų būti pašalinta iš masyvo
         // count = 0 -> return;

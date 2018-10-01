@@ -10,10 +10,10 @@ interface GeoCalculatorInterface
      * Edge of ellipse (circle) at NESW directions
      *
      * @param GeoCode $home Start location
-     * @param double $range in kilometres
+     * @param double $range
      * @return array of Coordinate
      */
-    public function getBoundariesPoints(GeoCode $home, $range): array;
+    public function getBoundariesPoints(GeoCode $home, float $range): array;
 
     /**
      * Return distance between given points

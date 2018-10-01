@@ -63,15 +63,17 @@ class AdvancedPathFinder implements PathFinderInterface
      * @param $beers
      * @return array|null
      */
-    private function setup($locations, $beers): ?array
+    private function setup(array $locations, array $beers): array
     {
         // $location => array($beer, $beer,... );
         $assembly = array();
 
         foreach ($locations as $location) {
-            $brewery = $location->getBrewery();
-            $collectedBeer = $this->collectBeers($brewery, $beers);
-            array_push($assembly, array($location, $collectedBeer));
+            if ($location instanceof GeoCode) {
+                $brewery = $location->getBrewery();
+                $collectedBeer = $this->collectBeers($brewery, $beers);
+                array_push($assembly, array($location, $collectedBeer));
+            }
         }
 
         return $assembly;
@@ -82,7 +84,7 @@ class AdvancedPathFinder implements PathFinderInterface
      * @param $beers
      * @return array
      */
-    private function collectBeers(Brewery $brewery, $beers)
+    private function collectBeers(Brewery $brewery, array $beers): array
     {
         $beerCollection = array();
 
@@ -104,7 +106,7 @@ class AdvancedPathFinder implements PathFinderInterface
      * @param GeoCode $home
      * @return int|null
      */
-    private function nextLocationId($assembly, $leftDistance, GeoCode $lastLocation, GeoCode $home)
+    private function nextLocationId(array $assembly, float $leftDistance, GeoCode $lastLocation, GeoCode $home): ?int
     {
         $id = null;
         $bestScore = 1e-6;
@@ -134,7 +136,7 @@ class AdvancedPathFinder implements PathFinderInterface
         return $id;
     }
 
-    private function scoreCalculator($distance, $beerCount)
+    private function scoreCalculator(float $distance, int $beerCount): float
     {
 
         if ($beerCount == 0) {

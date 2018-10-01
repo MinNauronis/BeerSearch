@@ -24,7 +24,7 @@ class BeerFormatter
      * @param array|null $path
      * @return array
      */
-    public function getReport(?array $path)
+    public function getReport(?array $path): array
     {
         $report = [];
         $breweries = [];
@@ -50,7 +50,7 @@ class BeerFormatter
      * @param array $breweries
      * @return array
      */
-    public function getBreweriesBeers(?array $breweries)
+    public function getBreweriesBeers(?array $breweries): array
     {
         $collection = array();
 
@@ -70,12 +70,12 @@ class BeerFormatter
         return $collection;
     }
 
-    private function formatBeersTitle($beersCounter)
+    private function formatBeersTitle($beersCounter): string
     {
         return 'Collected ' . $beersCounter . ' beer types:';
     }
 
-    private function formatBeersBody($beers)
+    private function formatBeersBody(array $beers): array
     {
         $body = [];
 
@@ -88,7 +88,7 @@ class BeerFormatter
         return $body;
     }
 
-    private function formatBeerBodyLine(Beer $beer)
+    private function formatBeerBodyLine(Beer $beer): string
     {
         return '-> ' . $beer->getName();
     }

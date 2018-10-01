@@ -18,7 +18,7 @@ class GeoCalculator implements GeoCalculatorInterface
      * @param $range
      * @return array of Coordinate
      */
-    public function getBoundariesPoints(GeoCode $home, $range): array
+    public function getBoundariesPoints(GeoCode $home, float $range): array
     {
         $directions = [];
         $dirNames = ['north', 'east', 'south', 'west'];
@@ -42,7 +42,7 @@ class GeoCalculator implements GeoCalculatorInterface
      * @param $bearing
      * @return GeoCode
      */
-    private function newPoint(GeoCode $currentPoint, $distance, $bearing)
+    private function newPoint(GeoCode $currentPoint, ?float $distance, ?float $bearing): GeoCode
     {
         $phi1 = $currentPoint->getLatitude() * M_PI / 180;
         $lam1 = $currentPoint->getLongitude() * M_PI / 180;
