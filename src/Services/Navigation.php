@@ -2,13 +2,15 @@
 
 namespace App\Services;
 
+use App\Entity\Beer;
 use App\Entity\GeoCode;
 use App\Services\Calculator\GeoCalculatorInterface;
 use App\Services\PathFinder\PathFinderInterface;
+use Doctrine\ORM\EntityManager;
 
 class Navigation
 {
-    private $dataProvider;
+    private $entityManager;
     private $breweriesLocations = array();
     private $calculator;
     private $pathFinder;
@@ -20,10 +22,9 @@ class Navigation
         $searchRangeKm,
         GeoCalculatorInterface $explorer,
         PathFinderInterface $pathFinder,
-        DataProvider $provider
-    )
-    { //<-){ vienoj eilutej
-        $this->dataProvider = $provider;
+        EntityManager $entityManager
+    ) {
+        $this->entityManager = $entityManager;
         $this->calculator = $explorer;
         $this->pathFinder = $pathFinder;
         $this->home = $home;
@@ -35,7 +36,7 @@ class Navigation
     {
         unset($this->breweriesLocations);
         $this->breweriesLocations = array();
-        $coordinates = $this->dataProvider->getLocations();
+        $coordinates = $this->entityManager->getRepository(GeoCode::class)->findAll();
 
         foreach ($coordinates as $coordinate) {
             $distance = $this->calculator->getDistance($this->home, $coordinate);
@@ -79,7 +80,7 @@ class Navigation
      */
     public function findPath(): ?array
     {
-        $beers = $this->dataProvider->getBeers();
+        $beers = $this->entityManager->getRepository(Beer::class)->findAll();
 
         $path = $this->pathFinder->findPath($this->home, $this->breweriesLocations, $beers, $this->searchRange);
 

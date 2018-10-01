@@ -3,19 +3,20 @@
 namespace App\Services\DataFormatter;
 
 use App\Entity\Beer;
+use App\Entity\Brewery;
 use App\Entity\GeoCode;
 use App\Services\Calculator\GeoCalculatorInterface;
-use App\Services\DataProvider;
+use Doctrine\ORM\EntityManagerInterface;
 
 class BeerFormatter
 {
-    private $data;
     private $calculator;
+    private $entityManager;
 
-    public function __construct(DataProvider $data, GeoCalculatorInterface $calculator)
+    public function __construct(EntityManagerInterface $entityManager, GeoCalculatorInterface $calculator)
     {
         $this->calculator = $calculator;
-        $this->data = $data;
+        $this->entityManager = $entityManager;
     }
 
 
@@ -34,12 +35,39 @@ class BeerFormatter
             }
         }
 
-        $beers = $this->data->getBreweriesBeers($breweries);
+        $beers = $this->getBreweriesBeers($breweries);
 
         $report += array('header' => $this->formatBeersTitle(count($beers)));
         $report += array('body' => $this->formatBeersBody($beers));
 
         return $report;
+    }
+
+
+    /**
+     * Return all beers from given breweries without duplication
+     *
+     * @param array $breweries
+     * @return array
+     */
+    public function getBreweriesBeers(?array $breweries)
+    {
+        $collection = array();
+
+        foreach ($breweries as $brewery) {
+
+            if ($brewery instanceof Brewery) {
+                $beers = $brewery->getBeers();
+
+                foreach ($beers as $beer) {
+                    if (!in_array($beer, $collection)) {
+                        $collection[] = $beer;
+                    }
+                }
+            }
+        }
+
+        return $collection;
     }
 
     private function formatBeersTitle($beersCounter)
