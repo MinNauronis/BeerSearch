@@ -37,3 +37,8 @@ services:
         tags:
            - { name: console.command }
 
+    App\Controller\BreweryController:
+        arguments:
+            $pathFinder: '@App\Services\PathFinder\AdvancedPathFinder'
+
+

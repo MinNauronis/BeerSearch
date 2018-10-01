@@ -9,14 +9,20 @@ use App\Services\DataFormatter\TravelFormatter;
 use App\Services\DataProvider;
 use App\Services\Calculator\GeoCalculator;
 use App\Services\Navigation;
-use App\Services\PathFinder\AdvancedPathFinder;
-use App\Services\PathFinder\SimplePathFinder;
+use App\Services\PathFinder\PathFinderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BreweryController extends AbstractController
 {
+    private $pathFinder;
+
+    public function __construct(PathFinderInterface $pathFinder)
+    {
+        $this->pathFinder = $pathFinder;
+    }
+
     /**
      * @Route("/brewery", name="brewery")
      */
@@ -66,10 +72,8 @@ class BreweryController extends AbstractController
     {
         $provider = new DataProvider($this->getDoctrine()->getManager());
         $calculator = new GeoCalculator();
-        $finder = new AdvancedPathFinder($calculator);
-        //$finder = new SimplePathFinder($calculator);
         $distanceKm = $fuelDistance / 2;
-        $navi = new Navigation($home, $distanceKm, $calculator, $finder, $provider);
+        $navi = new Navigation($home, $distanceKm, $calculator, $this->pathFinder, $provider);
         return $navi;
     }
 
